@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class LoginController extends Controller
 {
@@ -27,6 +29,7 @@ class LoginController extends Controller
 
         $credentials = $request->only('email', 'password');
 
+        config()->set('jwt.ttl', 60 * 24 * 7);
         if (!$token = auth()->guard('api')->attempt($credentials)){
             return response()->json([
                 'success' => false,
